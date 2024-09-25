@@ -5,17 +5,19 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.kubilaygurel.artbookfragment.model.ArtList
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 
 
 @Dao
 interface artListDao {
 
     @Query("SELECT * FROM ArtList")
-    fun getAll() : List<ArtList>
+    fun getAll() : Flowable<List<ArtList>>
 
     @Insert
-    fun insert(artList: ArtList)
+    fun insert(artList: ArtList) : Completable
 
     @Delete
-    fun delete(artList: ArtList)
+    fun delete(artList: ArtList) : Completable
 }
