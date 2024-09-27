@@ -1,6 +1,7 @@
 package com.kubilaygurel.artbookfragment.view
 
 import android.app.Activity.RESULT_OK
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.ImageDecoder
@@ -55,7 +56,6 @@ class GaleryFragment : Fragment() {
         }
         binding.imageView.setOnClickListener {
             artlistDao.getAll()
-            Log.d("test1", artlistDao.getAll().toString())
         }
         binding.imageView.setOnClickListener{
             selectImage(view)
@@ -85,25 +85,47 @@ class GaleryFragment : Fragment() {
 
     fun selectImage(view: View){
 
-        if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),android.Manifest.permission.READ_EXTERNAL_STORAGE)){
-                Snackbar.make(view,"Galeri için izin ver!",Snackbar.LENGTH_INDEFINITE).setAction("İZİN VER",View.OnClickListener {
-                    permissionLaunncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                }).show()
+            if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED){
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),android.Manifest.permission.READ_MEDIA_IMAGES)){
+                    Snackbar.make(view,"Galeri için izin ver!",Snackbar.LENGTH_INDEFINITE).setAction("İZİN VER",View.OnClickListener {
+                        permissionLaunncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
+                    }).show()
+
+                }else{
+                    permissionLaunncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
+
+
+                }
 
             }else{
-                permissionLaunncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                val intentToGalery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                activityResultLauncher.launch(intentToGalery)
 
             }
 
         }else{
-            val intentToGalery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            activityResultLauncher.launch(intentToGalery)
+            if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),android.Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    Snackbar.make(view,"Galeri için izin ver!",Snackbar.LENGTH_INDEFINITE).setAction("İZİN VER",View.OnClickListener {
+                        permissionLaunncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }).show()
+
+                }else{
+                    permissionLaunncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
+                }
+
+            }else{
+                val intentToGalery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                activityResultLauncher.launch(intentToGalery)
+
+            }
 
         }
-
-
 
         }
 
@@ -113,7 +135,7 @@ class GaleryFragment : Fragment() {
                     val intentFromResult = result.data
                     if (intentFromResult != null){
                        val imageData = intentFromResult.data
-                       // binding.imageView.setImageURI(imageData)
+
 
 
                         try {
