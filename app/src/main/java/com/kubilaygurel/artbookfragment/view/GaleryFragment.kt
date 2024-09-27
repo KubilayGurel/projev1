@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -42,20 +43,21 @@ class GaleryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.saveButton.setOnClickListener{
             save()
-
-        }
-        binding.imageView.setOnClickListener{
-            artlistDao.getAll()
-                Log.d("test1", artlistDao.getAll().toString())
         }
     }
 
     fun save (){
-        val artlist = ArtList(binding.artistNameText.text.toString(),binding.artNameText.text.toString(),binding.artYearText.text.toString())
-            artlistDao.insert(artlist)
-        //findNavController().navigate(R.id.action_galeryFragment_to_homeFragment)
+        val artList = ArtList(
+            binding.artistNameText.text.toString(),
+            binding.artNameText.text.toString(),
+            binding.artYearText.text.toString()
+        )
+        artlistDao.insert(artList)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+        findNavController().navigate(R.id.action_galeryFragment_to_homeFragment)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
