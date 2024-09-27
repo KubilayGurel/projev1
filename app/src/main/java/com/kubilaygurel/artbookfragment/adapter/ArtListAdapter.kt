@@ -12,10 +12,12 @@ class ArtListAdapter(
     private val artList: List<ArtList>,
 ) : RecyclerView.Adapter<ArtListAdapter.ArtlistHolder>() {
 
-    class ArtlistHolder(val recyclerRowBinding: RecyclerRowBinding) : RecyclerView.ViewHolder(recyclerRowBinding.root)
+    class ArtlistHolder(val recyclerRowBinding: RecyclerRowBinding) :
+        RecyclerView.ViewHolder(recyclerRowBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtlistHolder {
-        val recyclerRowBinding = RecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val recyclerRowBinding =
+            RecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ArtlistHolder(recyclerRowBinding)
     }
 
@@ -26,5 +28,5 @@ class ArtListAdapter(
     override fun onBindViewHolder(holder: ArtlistHolder, position: Int) {
         val art = artList[position]
         holder.recyclerRowBinding.RecylerViewTextView.text = art.artname
-        }
     }
+}

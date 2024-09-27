@@ -6,33 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.room.Room
-import com.kubilaygurel.artbookfragment.R
 import com.kubilaygurel.artbookfragment.databinding.FragmentGaleryBinding
 import com.kubilaygurel.artbookfragment.model.ArtList
 import com.kubilaygurel.artbookfragment.model.ArtlistDataBase
-import com.kubilaygurel.artbookfragment.roomdb.artListDao
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-
+import com.kubilaygurel.artbookfragment.roomdb.ArtListDao
 
 
 class GaleryFragment : Fragment() {
 
-    private lateinit var db : ArtlistDataBase
-    private lateinit var artlistDao : artListDao
+    private lateinit var db: ArtlistDataBase
+    private lateinit var artlistDao: ArtListDao
 
     private var _binding: FragmentGaleryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        db = Room.databaseBuilder(requireContext(), ArtlistDataBase::class.java, "Artlist")
+        db = Room.databaseBuilder(requireContext(), ArtlistDataBase::class.java, "ArtList")
             .allowMainThreadQueries()
             .build()
         artlistDao = db.ArtlistDao()
@@ -41,23 +32,25 @@ class GaleryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.saveButton.setOnClickListener{
+        binding.saveButton.setOnClickListener {
             save()
+        }
+        binding.imageView.setOnClickListener {
+            artlistDao.getAll()
+            Log.d("test1", artlistDao.getAll().toString())
         }
     }
 
-    fun save (){
-        val artList = ArtList(
+    fun save() {
+        val artlist = ArtList(
             binding.artistNameText.text.toString(),
             binding.artNameText.text.toString(),
             binding.artYearText.text.toString()
         )
-        artlistDao.insert(artList)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-        findNavController().navigate(R.id.action_galeryFragment_to_homeFragment)
+        artlistDao.insert(artlist).subscribe()
+
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,4 +61,4 @@ class GaleryFragment : Fragment() {
 
     }
 
-    }
+}

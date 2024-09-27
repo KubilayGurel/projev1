@@ -8,12 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.room.Room
 import com.kubilaygurel.artbookfragment.R
-import com.kubilaygurel.artbookfragment.model.ArtlistDataBase
-import com.kubilaygurel.artbookfragment.roomdb.artListDao
 
 class MainActivity : AppCompatActivity() {
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

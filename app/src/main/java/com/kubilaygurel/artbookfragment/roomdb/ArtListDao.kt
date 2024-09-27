@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Flowable
 
 
 @Dao
-interface artListDao {
+interface ArtListDao {
 
     @Query("SELECT * FROM ArtList")
     fun getAll() : Flowable<List<ArtList>>
