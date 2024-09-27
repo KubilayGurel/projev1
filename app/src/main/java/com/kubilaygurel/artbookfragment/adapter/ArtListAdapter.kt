@@ -28,5 +28,9 @@ class ArtListAdapter(
     override fun onBindViewHolder(holder: ArtlistHolder, position: Int) {
         val art = artList[position]
         holder.recyclerRowBinding.RecylerViewTextView.text = art.artname
+
+        holder.itemView.setOnClickListener{
+
+        }
     }
 }
