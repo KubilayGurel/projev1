@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 
 private lateinit var binding: FragmentHomeBinding
 private lateinit var artListAdapter: ArtListAdapter
+private lateinit var artListDao: artListDao
 
 class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,16 +44,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.setHasFixedSize(true)
-
-
         val db = Room.databaseBuilder(
             requireContext(),
             ArtlistDataBase::class.java,
             "ArtList"
         ).build()
+        lifecycleScope.launch {
+
+        }
+
+        artListAdapter = ArtListAdapter( artListDao.getAll().)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.adapter = artListAdapter
+
+
     }
+
 
 
 }
