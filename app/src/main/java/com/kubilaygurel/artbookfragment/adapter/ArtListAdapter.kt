@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kubilaygurel.artbookfragment.R
 import com.kubilaygurel.artbookfragment.databinding.RecyclerRowBinding
 import com.kubilaygurel.artbookfragment.model.ArtList
+import com.kubilaygurel.artbookfragment.view.HomeFragment
 
 class ArtListAdapter(
+
     private val artList: List<ArtList>,
+    private val onItemClick: (ArtList) -> Unit
 ) : RecyclerView.Adapter<ArtListAdapter.ArtlistHolder>() {
 
     class ArtlistHolder(val recyclerRowBinding: RecyclerRowBinding) :
@@ -30,6 +33,7 @@ class ArtListAdapter(
         holder.recyclerRowBinding.RecylerViewTextView.text = art.artname
 
         holder.itemView.setOnClickListener{
+            onItemClick(art)
 
         }
     }
