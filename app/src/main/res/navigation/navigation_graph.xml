@@ -33,5 +33,7 @@
         <action
             android:id="@+id/action_savedArtsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument android:name="artId"
+            app:argType="integer" />
     </fragment>
 </navigation>

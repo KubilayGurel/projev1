@@ -8,15 +8,18 @@
     tools:context=".view.SavedArtsFragment">
 
     <ImageView
-        android:id="@+id/savedImageVıew"
-        android:layout_width="wrap_content"
+        android:id="@+id/savedİmageView"
         android:layout_height="0dp"
         android:layout_marginBottom="300dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/photosave"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_width="match_parent"/>
 
     <TextView
         android:id="@+id/artistNameTextView"
@@ -28,7 +31,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/savedImageVıew" />
+        app:layout_constraintTop_toBottomOf="@+id/savedİmageView" />
 
     <TextView
         android:id="@+id/artNameTextView"

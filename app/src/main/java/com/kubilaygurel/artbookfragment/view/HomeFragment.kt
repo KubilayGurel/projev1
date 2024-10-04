@@ -48,9 +48,8 @@ class HomeFragment : Fragment() {
 
                     val artListAdapter = ArtListAdapter(artList) { art ->
 
-                        val bundle = Bundle()
-                        bundle.putInt("artId",art.id)
-                        findNavController().navigate(R.id.action_homeFragment_to_savedArtsFragment)
+                        val action = HomeFragmentDirections.actionHomeFragmentToSavedArtsFragment(artId = art.id)
+                        findNavController().navigate(action)
                     }
 
                     binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

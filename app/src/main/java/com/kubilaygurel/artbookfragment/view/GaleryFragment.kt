@@ -64,14 +64,14 @@ class GaleryFragment : Fragment() {
 
         }
 
-    private val selectedBitmap: Bitmap? = null
+    private  var selectedBitmap: Bitmap? = null
 
     private fun save() {
 
         selectedBitmap?.let{ bitmap ->
-            val smallerbitmap = makeSmallerBitmap(selectedBitmap,300)
+            val smallerbitmap = makeSmallerBitmap(bitmap,300)
             val stream = ByteArrayOutputStream()
-            smallerbitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+            smallerbitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val byteArray = stream.toByteArray()
 
 
@@ -196,6 +196,8 @@ class GaleryFragment : Fragment() {
                             } else {
                                 MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageData)
                             }
+
+                            selectedBitmap = bitmap
                             binding.imageView.setImageBitmap(bitmap)
                         } catch (e: Exception) {
                             e.printStackTrace()
