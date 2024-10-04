@@ -26,6 +26,8 @@ import com.kubilaygurel.artbookfragment.databinding.FragmentGaleryBinding
 import com.kubilaygurel.artbookfragment.model.ArtList
 import com.kubilaygurel.artbookfragment.model.ArtlistDataBase
 import com.kubilaygurel.artbookfragment.roomdb.artListDao
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 class GaleryFragment : Fragment() {
 
@@ -35,6 +37,8 @@ class GaleryFragment : Fragment() {
     private lateinit var permissionLaunncher: ActivityResultLauncher<String>
     private var _binding: FragmentGaleryBinding? = null
     private val binding get() = _binding!!
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,40 +64,51 @@ class GaleryFragment : Fragment() {
 
         }
 
+    private val selectedBitmap: Bitmap? = null
+
     private fun save() {
+
+        selectedBitmap?.let{ bitmap ->
+            val smallerbitmap = makeSmallerBitmap(selectedBitmap,300)
+            val stream = ByteArrayOutputStream()
+            smallerbitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+            val byteArray = stream.toByteArray()
+
 
         val artlist = ArtList(
             binding.artistNameText.text.toString(),
             binding.artNameText.text.toString(),
-            binding.artYearText.text.toString()
+            binding.artYearText.text.toString(),
+            image = byteArray
         )
         artlistDao.insert(artlist).subscribe()
         findNavController().navigate(R.id.action_galeryFragment_to_homeFragment)
     }
-    private fun makeSmallerBitmap(image: Bitmap, maximumSize: Int): Bitmap {
-
-        var width = image.width
-        var height = image.height
-        val bitmapRatio: Double = width.toDouble() / height.toDouble()
-
-        if (bitmapRatio > 1) {
-
-            width = maximumSize
-            val scaledHeight = width / bitmapRatio
-            height = scaledHeight.toInt()
-
-        } else {
-            width = maximumSize
-            val scaledWith = height * bitmapRatio
-            width = scaledWith.toInt()
         }
-        return Bitmap.createScaledBitmap(image, width, height, true)
+        private fun makeSmallerBitmap(image: Bitmap, maximumSize: Int): Bitmap {
+
+            var width = image.width
+            var height = image.height
+            val bitmapRatio: Double = width.toDouble() / height.toDouble()
+
+            if (bitmapRatio > 1) {
+
+                width = maximumSize
+                val scaledHeight = width / bitmapRatio
+                height = scaledHeight.toInt()
+
+            } else {
+                width = maximumSize
+                val scaledWith = height * bitmapRatio
+                width = scaledWith.toInt()
+            }
+            return Bitmap.createScaledBitmap(image, width, height, true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentGaleryBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -182,7 +197,6 @@ class GaleryFragment : Fragment() {
                                 MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageData)
                             }
                             binding.imageView.setImageBitmap(bitmap)
-
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

@@ -16,7 +16,10 @@ class ArtList(
     var artname: String,
 
     @ColumnInfo("year")
-    var year : String
+    var year : String,
+
+    val image : ByteArray?
+
 
 ) {
 
